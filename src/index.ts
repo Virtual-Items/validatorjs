@@ -1,6 +1,10 @@
 import { check, Report } from './TextValidator'
 
-const a: Report = check('true').true().isAlpha().getReports()
+// Validate
+const resports: Report = check('true').isNumber().true().getReports()
 
-console.log(a.ok)
-a.results.map(({message, value}) => console.log(message, value))
+// Get General Boolen
+console.log(resports.ok)
+
+// Get Each One Boolean
+resports.results.map(({message, value}) => console.log(message, value))

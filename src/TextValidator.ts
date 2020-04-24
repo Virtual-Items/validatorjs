@@ -46,6 +46,13 @@ export class TextValidator {
     private results: Result[]
 
     /**
+     * @private
+     * @type {boolean}
+     * @memberof TextValidator
+     */
+    private ok: boolean
+
+    /**
      * Creates an instance of Validator.
      * @param {string} data
      * @memberof Validator
@@ -87,6 +94,7 @@ export class TextValidator {
      */
     public reset() {
         this.results = []
+        this.ok = true
     }
 
     /**
@@ -97,6 +105,7 @@ export class TextValidator {
         const number: number = Number(this.data)
         const value: boolean = number ? (number >= min && number <= max) : false
         const message: string = value ? this.messages.ok : this.messages.between
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -108,6 +117,7 @@ export class TextValidator {
     public endsWith(text: string = '') {
         const value: boolean = RegExp(text + '$').test(this.data)
         const message: string = value ? this.messages.ok : this.messages.endsWith
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -119,6 +129,7 @@ export class TextValidator {
     public false() {
         const value: boolean = (this.data === 'false')
         const message: string = value ? this.messages.ok : this.messages.false
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -130,6 +141,7 @@ export class TextValidator {
     public isAlpha() {
         const value: boolean = /^[A-Z]*$/i.test(this.data)
         const message: string = value ? this.messages.ok : this.messages.isAlpha
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -141,6 +153,7 @@ export class TextValidator {
     public isAlphaNumeric() {
         const value: boolean = /^[A-Z0-9]*$/i.test(this.data)
         const message: string = value ? this.messages.ok : this.messages.isAlphaNumeric
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -152,6 +165,7 @@ export class TextValidator {
     public isChecked() {
         const value: boolean = (this.data === 'true')
         const message: string = value ? this.messages.ok : this.messages.isChecked
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -163,6 +177,7 @@ export class TextValidator {
     public isDate() {
         const value: boolean = (new Date(this.data)).getTime() ? true : false
         const message: string = value ? this.messages.ok : this.messages.isDate
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -174,6 +189,7 @@ export class TextValidator {
     public isEmail() {
         const value: boolean = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.data)
         const message: string = value ? this.messages.ok : this.messages.isEmail
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -185,6 +201,7 @@ export class TextValidator {
     public isEmpty() {
         const value: boolean = this.data === ''
         const message: string = value ? this.messages.ok : this.messages.isEmpty
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -197,6 +214,7 @@ export class TextValidator {
         const number: number = Number(this.data)
         const value: boolean = number ? !Number.isInteger(number) : false
         const message: string = value ? this.messages.ok : this.messages.isFloat
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -208,6 +226,7 @@ export class TextValidator {
     public isHexColor() {
         const value: boolean = /^\#[0-9A-F]{6}$/i.test(this.data)
         const message: string = value ? this.messages.ok : this.messages.isHexColor
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -220,6 +239,7 @@ export class TextValidator {
         const number: number = Number(this.data)
         const value: boolean = number ? Number.isInteger(number) : false
         const message: string = value ? this.messages.ok : this.messages.isInteger
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -231,6 +251,7 @@ export class TextValidator {
     public isNumber() {
         const value: boolean = Number(this.data) ? true : false
         const message: string = value ? this.messages.ok : this.messages.isNumber
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -242,6 +263,7 @@ export class TextValidator {
     public isTel() {
         const value: boolean = /^(\d{7}|\d{10})$/.test(this.data)
         const message: string = value ? this.messages.ok : this.messages.isTel
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -253,6 +275,7 @@ export class TextValidator {
     public isTime() {
         const value: boolean = /^(0?[0-9]|[1-2][0-3]):(0?[0-9]|[1-5][0-9])$/.test(this.data)
         const message: string = value ? this.messages.ok : this.messages.isTime
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -269,6 +292,7 @@ export class TextValidator {
             value = false
         }
         const message: string = value ? this.messages.ok : this.messages.isUrl
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -280,6 +304,7 @@ export class TextValidator {
     public isWeek() {
         const value: boolean = /^(0?[1-9]|[1234][0-9]|5[0-3])$/.test(this.data)
         const message: string = value ? this.messages.ok : this.messages.isWeek
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -291,6 +316,7 @@ export class TextValidator {
     public match(regexp: RegExp = /./) {
         const value: boolean = regexp.test(this.data)
         const message: string = value ? this.messages.ok : this.messages.match
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -303,6 +329,7 @@ export class TextValidator {
         const number: number = Number(this.data)
         const value: boolean = number ? number <= max : false
         const message: string = value ? this.messages.ok : this.messages.max
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -315,6 +342,7 @@ export class TextValidator {
         const number: number = Number(this.data)
         const value: boolean = number ? number >= min : false
         const message: string = value ? this.messages.ok : this.messages.min
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -326,6 +354,7 @@ export class TextValidator {
     public startsWith(text: string = '') {
         const value: boolean = RegExp('^' + text).test(this.data)
         const message: string = value ? this.messages.ok : this.messages.startsWith
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -337,6 +366,7 @@ export class TextValidator {
     public true() {
         const value: boolean = (this.data === 'true')
         const message: string = value ? this.messages.ok : this.messages.true
+        this.ok = !this.ok ? false : value
         this.results.push({message, value})
         return this
     }
@@ -347,18 +377,11 @@ export class TextValidator {
      */
     public getReports(): Report {
         const info: Report = {
-            ok: true,
+            ok: this.ok,
             results: this.results
         }
 
         this.reset()
-
-        for(const item of info.results) {
-            if(!item.value) {
-                info.ok = false
-                break
-            }
-        }
 
         return info
     }
