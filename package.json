@@ -1,0 +1,12 @@
+{
+  "name": "validation-library",
+  "version": "0.1.0",
+  "description": "Data validation library",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc --project tsconfig.json & node dist/index.js & pause & cls"
+  },
+  "author": "AlejandroCR<AlejandroCR.1024@gmail.com>",
+  "license": "MIT",
+  "dependencies": {}
+}
