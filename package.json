@@ -4,9 +4,13 @@
   "description": "Data validation library",
   "main": "index.js",
   "scripts": {
-    "start": "tsc --project tsconfig.json & node dist/index.js & pause & cls"
+    "test": "tsc --project tsconfig.json & node dist/index.js",
+    "build": "tsc --project tsconfig.json"
   },
   "author": "AlejandroCR<AlejandroCR.1024@gmail.com>",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  }
 }
