@@ -7,4 +7,4 @@ const resports: Report = check('true').isNumeric().isTrue().getReports()
 console.log(resports.ok)
 
 // Get Each One Boolean
-resports.errors.map(({message, code}) => console.log(message, code))
+resports.success.map(({message}) => console.log(message))

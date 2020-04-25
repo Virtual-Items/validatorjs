@@ -73,7 +73,7 @@ export class TextValidator {
      * @param {string} data
      * @memberof Validator
      */
-    public constructor(data: string) {
+    public constructor(data: any = '') {
         this.data = data.toString().trim()
         
         this.messages = {
@@ -99,8 +99,13 @@ export class TextValidator {
             isTrue: 'is not true',
             isUrl: 'is not url',
             isWeek: 'is not week',
+            lengthIsBetween: 'length is not between',
+            lengthIsMax: 'length is not max',
+            lengthIsMin: 'length is not min',
             matches: 'is not match',
             startsWith: 'is not starts with',
+            isNotEmpty: 'is empty',
+            equals: 'is not equals',
         }
 
         this.codes = {
@@ -125,8 +130,13 @@ export class TextValidator {
             isTrue: 'true',
             isUrl: 'url',
             isWeek: 'week',
+            lengthIsBetween: 'lengthbetween',
+            lengthIsMax: 'lengthmax',
+            lengthIsMin: 'lengthmin',
             matches: 'matches',
             startsWith: 'startswith',
+            isNotEmpty: 'notempty',
+            equals: 'equals',
         }
 
         this.reset()
@@ -283,9 +293,26 @@ export class TextValidator {
      * @memberof Validator
      */
     public isEmpty() {
-        const value: boolean = this.data === ''
+        const value: boolean = this.data.length == 0
         const message: string = value ? this.messages.ok : this.messages.isEmpty
         const code: string = this.codes.isEmpty
+        this.ok = !this.ok ? false : value
+        if (value) {
+            this.success.push({message, code})
+        } else {
+            this.errors.push({message, code})
+        }
+        return this
+    }
+
+    /**
+     * @returns {Validator}
+     * @memberof Validator
+     */
+    public isNotEmpty() {
+        const value: boolean = this.data.length != 0
+        const message: string = value ? this.messages.ok : this.messages.isNotEmpty
+        const code: string = this.codes.isNotEmpty
         this.ok = !this.ok ? false : value
         if (value) {
             this.success.push({message, code})
@@ -439,11 +466,12 @@ export class TextValidator {
     }
 
     /**
+     * @param {string} [regexp='']
      * @returns {Validator}
      * @memberof Validator
      */
-    public matches(regexp: RegExp = /./) {
-        const value: boolean = regexp.test(this.data)
+    public matches(regexp: string = '') {
+        const value: boolean = RegExp(regexp).test(this.data)
         const message: string = value ? this.messages.ok : this.messages.matches
         const code: string = this.codes.matches
         this.ok = !this.ok ? false : value
@@ -455,7 +483,27 @@ export class TextValidator {
         return this
     }
 
+     /**
+     * @param {string} [regexp='']
+     * @returns {Validator}
+     * @memberof Validator
+     */
+    public equals(regexp: string = '') {
+        const value: boolean = RegExp('^' + regexp + '$').test(this.data)
+        const message: string = value ? this.messages.ok : this.messages.equals
+        const code: string = this.codes.equals
+        this.ok = !this.ok ? false : value
+        console.log(regexp, this.data, value)
+        if (value) {
+            this.success.push({message, code})
+        } else {
+            this.errors.push({message, code})
+        }
+        return this
+    }
+
     /**
+     * @param {number} [max=0]
      * @returns {Validator}
      * @memberof Validator
      */
@@ -474,6 +522,7 @@ export class TextValidator {
     }
 
     /**
+     * @param {number} [min=0]
      * @returns {Validator}
      * @memberof Validator
      */
@@ -542,7 +591,63 @@ export class TextValidator {
         return this
     }
 
-    
+    /**
+     * @param {number} [min=0]
+     * @param {number} [max=0]
+     * @returns {Validator}
+     * @memberof Validator
+     */
+    public lengthIsBetween(min: number =0, max: number =0) {
+        const number: number = this.data.length
+        const value: boolean = number ? (number >= min && number <= max) : false
+        const message: string = value ? this.messages.ok : this.messages.lengthIsBetween
+        const code: string = this.codes.lengthIsBetween
+        this.ok = !this.ok ? false : value
+        if (value) {
+            this.success.push({message, code})
+        } else {
+            this.errors.push({message, code})
+        }
+        return this
+    }
+
+    /**
+     * @param {number} [max=0]
+     * @returns {Validator}
+     * @memberof Validator
+     */
+    public lengthIsMax(max: number =0) {
+        const number: number = this.data.length
+        const value: boolean = number ? number <= max : false
+        const message: string = value ? this.messages.ok : this.messages.lengthIsMax
+        const code: string = this.codes.lengthIsMax
+        this.ok = !this.ok ? false : value
+        if (value) {
+            this.success.push({message, code})
+        } else {
+            this.errors.push({message, code})
+        }
+        return this
+    }
+
+    /**
+     * @param {number} [min=0]
+     * @returns {Validator}
+     * @memberof Validator
+     */
+    public lengthIsMin(min: number =0) {
+        const number: number = this.data.length
+        const value: boolean = number ? number >= min : false
+        const message: string = value ? this.messages.ok : this.messages.lengthIsMin
+        const code: string = this.codes.lengthIsMin
+        this.ok = !this.ok ? false : value
+        if (value) {
+            this.success.push({message, code})
+        } else {
+            this.errors.push({message, code})
+        }
+        return this
+    }
 
     /**
      * @returns {Validator}
